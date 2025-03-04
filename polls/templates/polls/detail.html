@@ -1,0 +1,39 @@
+
+{% comment %}
+■<form action="{% url 'polls:vote' question.id %}" method="post">
+>action ="{% url 'polls:vote' quesiton.id%}"
+→pollsアプリのurl voteにフォーム送信
+→question.idを渡す。
+>method="post"
+→フォーム送信方法はPOST（データを変更するリクエスト）
+
+■CSRFトークン
+{% csrf_token %}
+→クロスサイトリクエストフォージェリ攻撃を防ぐための仕組み
+
+CSRF攻撃
+
+{% endcomment %}
+
+
+{% comment %} {{ question }} {% endcomment %}
+{% comment %} <h1>{{ question.question_text }}</h1> {% endcomment %}
+{% comment %}
+<ul>
+  {% for choice in question.choice_set.all %}
+  <li>{{ choice.choice_text }}</li>
+  {% endfor %}
+</ul>
+{% endcomment %}
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input type="submit" value="Vote">
+</form>

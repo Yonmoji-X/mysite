@@ -28,12 +28,40 @@ Djangoがクライアント（ユーザー）のリクエストURLを処理す�
 ■revers()関数とは
 →Djangoのreverse()関数は、URLパターンの「名前（name）」から十歳のURLを取得するための関数。
 →通常、Djangoのpath()でnameを設定している場合、reverse()を使うとそのURLを動的に取得できる。これにより、ハードコーディング（URLを直接記述すること）を避けることができる。
+
+■urls.pyにpath()コードを入力することで、viewとpolls.urlsモジュールを結びつける。
+
+■path('url', views.メソッド名, nameオプション)
 '''
+
+# from django.urls import path
+
+# from . import views
+
+# ■URLの名前空間
+# →mysite内に複数アプリを作ることができるため、どのアプリでのリンクか区別する必要がある。そこで、app_nameを定義する必要がある。
+
+# app_name = 'polls'
+# urlpatterns = [
+#     # 例:/polls/
+#     path('', views.index, name='index'),
+#     # 例:/polls/5/
+#     path('<int:question_id>/', views.detail, name='detail'),
+#     # 例:/polls/5/results/
+#     path('<int:question_id>/results/', views.resulte, name='results'),
+#     # 例:/polls.5/vote/
+#     path('<int:question_id>/vote/', views.vote, name='vote'),
+#     path('<int:question_id>/', views.detail, name='detail'),
+# ]
 
 from django.urls import path
 
 from . import views
 
+app_name = 'polls'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
